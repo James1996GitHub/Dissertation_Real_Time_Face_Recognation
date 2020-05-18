@@ -1,0 +1,13 @@
+inputSize = net.Layers(1).InputSize(1:2); %Sets input size to size of images specified for the CNN.
+h = figure; %CReates figure that video frames will be drawn onto.
+v = VideoReader('vid.mp4') %Loads in video.
+v.CurrentTime = 0; %Sets video time to 0 seconds/the starts.
+
+while v.hasFrame() %Runs loop for as long as there is a next frame until the final frame of the file has been displayed and classified.
+    dis = v.readFrame(); %Captures frame as singular image.
+    image(dis) %Displays frame.
+    dis = imresize(dis,inputSize); %Resizes frame.
+    [label,score] = classify(net,dis); %Uses trained CNN to predict label and score for that indavidual frame.
+    title({char(label), num2str(max(score),2)}); %Sets score and lable as a tile.
+    drawnow
+end %Repeats loop.
