@@ -1,0 +1,13 @@
+vid = videoinput('winvideo', 1, 'MJPG_1280x720');	%Sets micro-camera as variable in MATLAB.
+
+inputSize = net.Layers(1).InputSize(1:2);	%Sets input size to size of images specified for the CNN.
+h = figure;
+
+while ishandle(h) %
+    im = getsnapshot(vid);	%Takes a snapshot from the camera.
+    image(im)	%Displays snapshot onto figure.
+    im = imresize(im,inputSize);	%Resizes snapshot.
+    [label,score] = classify(net,im);	%Uses trained CNN to predict label and score for that individual snapshot.
+    title({char(label), num2str(max(score),2)});	%Sets score and label as a tile.
+   Drawnow	Updates figure. 
+end	%Repeats loop.
